@@ -5,12 +5,13 @@ using UnityEngine;
 public class SpriteCharacterController : MonoBehaviour
 {
     [Header("Character Properties")]
-    [SerializeField] float moveSpeed = 5f;
-    [SerializeField] float attackCd = 0.1f;
+    [SerializeField] float movementSpeed = 5f;
+    [SerializeField] float attackCooldown = 0.1f;
 
     Rigidbody2D rb;
     Animator animator;
     Timer attackCdTimer;
+
 
     Vector2 m_movement;
     Vector2 m_lastMovement;
@@ -21,7 +22,7 @@ public class SpriteCharacterController : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
 
-        attackCdTimer = new Timer(attackCd);
+        attackCdTimer = new Timer(attackCooldown);
     }
 
     public void SetMovement(Vector2 input)
@@ -38,6 +39,11 @@ public class SpriteCharacterController : MonoBehaviour
             attackCdTimer.StartTimer();
             animator.SetTrigger("Attack");
         }
+    }
+
+    void HandleAttackDetection()
+    {
+
     }
 
     void Update()
@@ -62,6 +68,6 @@ public class SpriteCharacterController : MonoBehaviour
 
     void FixedUpdate()
     {
-        rb.MovePosition(rb.position + m_movement * moveSpeed * Time.fixedDeltaTime);
+        rb.MovePosition(rb.position + m_movement * movementSpeed * Time.fixedDeltaTime);
     }
 }
