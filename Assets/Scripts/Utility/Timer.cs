@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-
+﻿
 /// <summary>
 /// A Timer object that tracks its own state
 /// </summary>
