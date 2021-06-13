@@ -22,5 +22,10 @@ public class PlayerInputController : MonoBehaviour
         input.y = Input.GetAxisRaw("Vertical");
 
         controller.SetMovement(input);
+
+        if (Input.GetButtonDown("Fire1"))
+        {
+            controller.PerformAttack();
+        }
     }
 }
