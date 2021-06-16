@@ -27,5 +27,10 @@ public class PlayerInputController : MonoBehaviour
         {
             controller.PerformAttack();
         }
+
+        if (Input.GetButtonDown("Fire2"))
+        {
+            controller.PerformInteraction();
+        }
     }
 }

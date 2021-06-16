@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SpriteCharacterController : MonoBehaviour
+public class SpriteCharacterController : Entity2D
 {
     [Header("Character Properties")]
     [SerializeField] float movementSpeed = 5f;
@@ -18,10 +18,11 @@ public class SpriteCharacterController : MonoBehaviour
     Vector2 m_lastMovement;
     bool m_isAttacking;
     FacingDirection m_facingDirection = FacingDirection.SOUTH;
-    Vector2 m_attackDirection;
+    Vector2 m_facingVector;
 
-    private void Awake()
+    protected override void Awake()
     {
+        base.Awake();
         rb = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
 
@@ -47,34 +48,38 @@ public class SpriteCharacterController : MonoBehaviour
         }
     }
 
+    public void PerformInteraction()
+    {
+       // TODO: Raycast2D using the m_facingVector
+    }
+
     void HandleAttackDetection()
     {
-        m_attackDirection = Vector2.right;
+        m_facingVector = Vector2.right;
 
         switch (m_facingDirection)
         {
             case FacingDirection.NORTH:
-                m_attackDirection = Vector2.up;
+                m_facingVector = Vector2.up;
                 break;
             case FacingDirection.SOUTH:
-                m_attackDirection = -Vector2.up;
+                m_facingVector = -Vector2.up;
                 break;
             case FacingDirection.EAST:
-                m_attackDirection = Vector2.right;
+                m_facingVector = Vector2.right;
                 break;
             case FacingDirection.WEST:
-                m_attackDirection = -Vector2.right;
+                m_facingVector = -Vector2.right;
                 break;
             default:
                 break;
         }
 
-        Collider2D[] hitTargets = Physics2D.OverlapCircleAll(rb.position + (m_attackDirection/2), attackRange, combatLayers.value);
+        Collider2D[] hitTargets = Physics2D.OverlapCircleAll(rb.position + (m_facingVector / 2), attackRange, combatLayers.value);
 
         for (int i = 0; i < hitTargets.Length; i++)
         {
             Debug.Log(hitTargets[i]);
-
         }
     }
 
@@ -150,7 +155,7 @@ public class SpriteCharacterController : MonoBehaviour
     private void OnDrawGizmos()
     {
         if (Application.isPlaying && m_isAttacking)
-            Gizmos.DrawWireSphere(rb.position + (m_attackDirection/2), attackRange);
+            Gizmos.DrawWireSphere(rb.position + (m_facingVector / 2), attackRange);
     }
 }
 
