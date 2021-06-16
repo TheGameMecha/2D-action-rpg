@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using System.Text.RegularExpressions;
+using UnityEngine.UI;
 
 namespace DialogueSystem
 {
@@ -23,10 +24,12 @@ namespace DialogueSystem
         #endregion
 
         public GameObject dialoguePanel;
-        public GameObject continueButton;
+        public Button continueButton;
         public TextMeshProUGUI speakerName;
         public TextMeshProUGUI dialogueText;
         private Queue<string> sentences;
+
+        Animator continueButtonAnimator;
 
 
         [Header("Settings")]
@@ -42,6 +45,7 @@ namespace DialogueSystem
             speakerName.text = "";
             dialogueText.text = "";
             dialoguePanel.SetActive(false);
+            continueButtonAnimator = continueButton.GetComponent<Animator>();
         }
 
         public void StartDialogue(Dialogue dialogue)
@@ -50,7 +54,9 @@ namespace DialogueSystem
                 speakerName.text = dialogue.speakerName;
             dialogueText.text = "";
             dialoguePanel.SetActive(true);
-            continueButton.SetActive(false);
+            continueButtonAnimator.SetBool("IsReady", false);
+            continueButton.enabled = false;
+
             sentences.Clear();
             foreach (string sentence in dialogue.sentences)
             {
@@ -63,7 +69,8 @@ namespace DialogueSystem
 
         public void DisplayNextSentence()
         {
-            continueButton.SetActive(false);
+            continueButtonAnimator.SetBool("IsReady", false);
+            continueButton.enabled = false;
             if (sentences.Count == 0)
             {
                 EndDialogue();
@@ -115,7 +122,8 @@ namespace DialogueSystem
             }
 
             yield return new WaitForEndOfFrame();
-            continueButton.SetActive(true);
+            continueButtonAnimator.SetBool("IsReady", true);
+            continueButton.enabled = true;
         }
 
         bool CheckTextForKey(string text, string key)

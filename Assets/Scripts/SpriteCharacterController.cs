@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+[RequireComponent(typeof(Animator))]
 public class SpriteCharacterController : Entity2D
 {
     [Header("Character Properties")]
@@ -55,26 +56,6 @@ public class SpriteCharacterController : Entity2D
 
     void HandleAttackDetection()
     {
-        m_facingVector = Vector2.right;
-
-        switch (m_facingDirection)
-        {
-            case FacingDirection.NORTH:
-                m_facingVector = Vector2.up;
-                break;
-            case FacingDirection.SOUTH:
-                m_facingVector = -Vector2.up;
-                break;
-            case FacingDirection.EAST:
-                m_facingVector = Vector2.right;
-                break;
-            case FacingDirection.WEST:
-                m_facingVector = -Vector2.right;
-                break;
-            default:
-                break;
-        }
-
         Collider2D[] hitTargets = Physics2D.OverlapCircleAll(rb.position + (m_facingVector / 2), attackRange, combatLayers.value);
 
         for (int i = 0; i < hitTargets.Length; i++)
@@ -116,6 +97,27 @@ public class SpriteCharacterController : Entity2D
         else if (m_lastMovement.y < 0)
         {
             m_facingDirection = FacingDirection.SOUTH;
+        }
+
+
+        m_facingVector = Vector2.right;
+
+        switch (m_facingDirection)
+        {
+            case FacingDirection.NORTH:
+                m_facingVector = Vector2.up;
+                break;
+            case FacingDirection.SOUTH:
+                m_facingVector = -Vector2.up;
+                break;
+            case FacingDirection.EAST:
+                m_facingVector = Vector2.right;
+                break;
+            case FacingDirection.WEST:
+                m_facingVector = -Vector2.right;
+                break;
+            default:
+                break;
         }
     }
 
