@@ -29,8 +29,9 @@ namespace DialogueSystem
         public TextMeshProUGUI dialogueText;
         private Queue<string> sentences;
 
-        Animator continueButtonAnimator;
+        public bool dialogueIsActive = false;
 
+        Animator continueButtonAnimator;
 
         [Header("Settings")]
         [SerializeField] float defaultTypeSpeed = 3f;
@@ -38,13 +39,13 @@ namespace DialogueSystem
         bool clearNextLine = false;
         float typeSpeedDelay = 1f;
 
-
         void Start()
         {
             sentences = new Queue<string>();
             speakerName.text = "";
             dialogueText.text = "";
             dialoguePanel.SetActive(false);
+            dialogueIsActive = false;
             continueButtonAnimator = continueButton.GetComponent<Animator>();
         }
 
@@ -54,6 +55,7 @@ namespace DialogueSystem
                 speakerName.text = dialogue.speakerName;
             dialogueText.text = "";
             dialoguePanel.SetActive(true);
+            dialogueIsActive = true;
             continueButtonAnimator.SetBool("IsReady", false);
             continueButton.enabled = false;
 
@@ -94,11 +96,11 @@ namespace DialogueSystem
         public void EndDialogue()
         {
             dialoguePanel.SetActive(false);
+            dialogueIsActive = false;
         }
 
         IEnumerator TypeText(string sentence)
         {
-
             // Check if we want to use [CLS]
             if (clearNextLine)
             {
@@ -116,7 +118,6 @@ namespace DialogueSystem
             foreach (char letter in sentence.ToCharArray())
             {
                 dialogueText.text += letter;
-                Debug.Log(Mathf.Pow(typeSpeedDelay, -1));
                 yield return new WaitForSeconds(Mathf.Pow(typeSpeedDelay, -1));
 
             }

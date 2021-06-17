@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using DialogueSystem;
 
 public class GameManager : MonoBehaviour
 {
@@ -17,6 +18,20 @@ public class GameManager : MonoBehaviour
     }
     #endregion
 
+    public LayerMask interactableLayer;
+
+    public bool isUiActive = false;
+
+    private void Update()
+    {
+        if (DialogueManager.instance.dialogueIsActive)
+            isUiActive = true;
+        else
+            isUiActive = false;
+    }
 }
 
+public static class StaticGameElements
+{
 
+}

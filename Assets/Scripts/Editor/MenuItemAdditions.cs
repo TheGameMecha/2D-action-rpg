@@ -5,7 +5,7 @@ using UnityEditor;
 
 public class MenuItemAdditions : Editor
 {
-    [MenuItem("GameObject/Create Other/Entity2D")]
+    [MenuItem("GameObject/Create Other/Entity/Entity2D")]
     public static void CreateEntity2D()
     {
         GameObject go = new GameObject();
@@ -15,7 +15,29 @@ public class MenuItemAdditions : Editor
         Selection.activeGameObject = go;
     }
 
-    [MenuItem("GameObject/Create Other/Trigger Zone")]
+    [MenuItem("GameObject/Create Other/Entity/Interactable Entity2D")]
+    public static void CreateInteractableEntity2D()
+    {
+        GameObject go = new GameObject();
+        go.name = "New Interactable Entity2D";
+        go.AddComponent<BoxCollider2D>();
+        go.AddComponent<InteractableEntity2D>();
+        go.layer = 9;
+        Selection.activeGameObject = go;
+    }
+
+    [MenuItem("GameObject/Create Other/Entity/Interactable Dialogue Entity2D")]
+    public static void CreateInteractableDialogueEntity2D()
+    {
+        GameObject go = new GameObject();
+        go.name = "Interactable Dialogue Entity2D";
+        go.AddComponent<BoxCollider2D>();
+        go.AddComponent<DialogueInteractableEntity2D>();
+        go.layer = 9;
+        Selection.activeGameObject = go;
+    }
+
+    [MenuItem("GameObject/Create Other/Trigger/Trigger Zone")]
     public static void CreateTriggerZone()
     {
         GameObject go = new GameObject();
@@ -25,7 +47,7 @@ public class MenuItemAdditions : Editor
         Selection.activeGameObject = go;
     }
 
-    [MenuItem("GameObject/Create Other/Dialogue Trigger Zone")]
+    [MenuItem("GameObject/Create Other/Trigger/Dialogue Trigger Zone")]
     public static void CreateDialogueTriggerZone()
     {
         GameObject go = new GameObject();

@@ -18,6 +18,12 @@ public class PlayerInputController : MonoBehaviour
 
     void Update()
     {
+        if (GameManager.instance.isUiActive)
+        {
+            controller.StopAllMovement();
+            return;
+        }
+
         input.x = Input.GetAxisRaw("Horizontal");
         input.y = Input.GetAxisRaw("Vertical");
 

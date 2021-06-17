@@ -10,6 +10,7 @@ public class SpriteCharacterController : Entity2D
     [SerializeField] float attackCooldown = 0.1f;
     [SerializeField] [Tooltip("The layers that this character can attack")] LayerMask combatLayers;
     [SerializeField] float attackRange = 1.0f;
+    [SerializeField] float interactRange = 1.0f;
 
     Rigidbody2D rb;
     Animator animator;
@@ -51,7 +52,18 @@ public class SpriteCharacterController : Entity2D
 
     public void PerformInteraction()
     {
-       // TODO: Raycast2D using the m_facingVector
+        RaycastHit2D hit = Physics2D.Raycast(rb.position, m_facingVector, interactRange, GameManager.instance.interactableLayer);
+        Debug.DrawRay(rb.position, m_facingVector * interactRange);
+
+        if (hit.collider != null)
+        {
+            Debug.Log("Interacted with " + hit.collider.name);
+
+            if (hit.collider.GetComponent<InteractableEntity2D>() != null)
+            {
+                hit.collider.GetComponent<InteractableEntity2D>().InteractedWith(this);
+            }
+        }
     }
 
     void HandleAttackDetection()
@@ -152,6 +164,12 @@ public class SpriteCharacterController : Entity2D
     {
         if (!m_isAttacking)
             rb.MovePosition(rb.position + m_movement * movementSpeed * Time.fixedDeltaTime);
+    }
+
+    public void StopAllMovement()
+    {
+        m_movement = Vector2.zero;
+        //m_lastMovement = Vector2.zero;
     }
 
     private void OnDrawGizmos()

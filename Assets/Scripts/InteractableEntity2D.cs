@@ -8,8 +8,8 @@ using UnityEngine;
 /// </summary>
 public class InteractableEntity2D : Entity2D
 {
-    public virtual void InteractedWith()
+    public virtual void InteractedWith(Entity2D otherEntity)
     {
-
+        Debug.Log("Entity: " + gameObject.name + " interacted with by " + otherEntity.name);
     }
 }
