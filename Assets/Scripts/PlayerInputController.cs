@@ -11,6 +11,12 @@ public class PlayerInputController : MonoBehaviour
 {
     SpriteCharacterController controller;
     Vector2 input;
+
+    // Input Bools
+    bool attack;
+    bool interact;
+    bool confirmUI;
+
     PlayerControlScheme controls;
 
     private void Awake()
@@ -20,6 +26,13 @@ public class PlayerInputController : MonoBehaviour
 
         controls.Player.Move.performed += ctx => input = ctx.ReadValue<Vector2>();
         controls.Player.Move.canceled += ctx => input = Vector2.zero;
+        controls.Player.Fire.performed += ctx => attack = true;
+        controls.Player.Fire.canceled += ctx => attack = false;
+        controls.Player.Interact.performed += ctx => interact = true;
+        controls.Player.Interact.canceled += ctx => interact = false;
+
+        controls.UI.Submit.performed += ctx => confirmUI = true;
+        controls.UI.Submit.canceled += ctx => confirmUI = false;
     }
 
     void Update()
@@ -27,25 +40,25 @@ public class PlayerInputController : MonoBehaviour
         if (GameManager.instance.isUiActive)
         {
             controller.StopAllMovement();
+            controls.Player.Disable();
             return;
         }
-
-
-        
-        //input.x = Input.GetAxisRaw("Horizontal");
-        //input.y = Input.GetAxisRaw("Vertical");
+        else
+        {
+            controls.Player.Enable();
+        }
 
         controller.SetMovement(input);
 
-        //if (Input.GetButtonDown("Fire1"))
-        //{
-        //    controller.PerformAttack();
-        //}
+        if (attack)
+        {
+            controller.PerformAttack();
+        }
 
-        //if (Input.GetButtonDown("Fire2"))
-        //{
-        //    controller.PerformInteraction();
-        //}
+        if (interact && GameManager.instance.isUiActive == false)
+        {
+            controller.PerformInteraction();
+        }
     }
 
     void OnEnable()

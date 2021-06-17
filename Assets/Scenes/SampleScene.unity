@@ -152,7 +152,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 37dc8005ad219d34bbbb4eacffb7d008, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  entityType: 2
+  entityType: 4
   dialogue: {fileID: 11400000, guid: 15f5a91c9b3cd1940a06b861680de722, type: 2}
 --- !u!61 &7260634
 BoxCollider2D:

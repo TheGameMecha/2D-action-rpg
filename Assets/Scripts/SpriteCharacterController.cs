@@ -22,6 +22,8 @@ public class SpriteCharacterController : Entity2D
     FacingDirection m_facingDirection = FacingDirection.SOUTH;
     Vector2 m_facingVector;
 
+    Collider2D m_interactableInRange;
+
     protected override void Awake()
     {
         base.Awake();
@@ -42,7 +44,7 @@ public class SpriteCharacterController : Entity2D
 
     public void PerformAttack()
     {
-        if (!m_isAttacking)
+        if (!m_isAttacking && m_interactableInRange == null)
         {
             m_isAttacking = true;
             attackCdTimer.StartTimer();
@@ -52,18 +54,25 @@ public class SpriteCharacterController : Entity2D
 
     public void PerformInteraction()
     {
-        RaycastHit2D hit = Physics2D.Raycast(rb.position, m_facingVector, interactRange, GameManager.instance.interactableLayer);
-        Debug.DrawRay(rb.position, m_facingVector * interactRange);
+        if (m_isAttacking)
+            return;
 
-        if (hit.collider != null)
+        if (m_interactableInRange != null)
         {
-            Debug.Log("Interacted with " + hit.collider.name);
+            Debug.Log("Interacted with " + m_interactableInRange.name);
 
-            if (hit.collider.GetComponent<InteractableEntity2D>() != null)
+            if (m_interactableInRange.GetComponent<InteractableEntity2D>() != null)
             {
-                hit.collider.GetComponent<InteractableEntity2D>().InteractedWith(this);
+                m_interactableInRange.GetComponent<InteractableEntity2D>().InteractedWith(this);
             }
         }
+    }
+
+    void CheckForInteract()
+    {
+        RaycastHit2D hit = Physics2D.Raycast(rb.position, m_facingVector, interactRange, GameManager.instance.interactableLayer);
+        m_interactableInRange = hit.collider;
+        Debug.DrawRay(rb.position, m_facingVector * interactRange);
     }
 
     void HandleAttackDetection()
@@ -153,6 +162,7 @@ public class SpriteCharacterController : Entity2D
         }
 
         UpdateFacingDirection();
+        CheckForInteract();
 
         if (m_isAttacking)
         {
