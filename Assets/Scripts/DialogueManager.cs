@@ -5,6 +5,7 @@ using UnityEngine;
 using TMPro;
 using System.Text.RegularExpressions;
 using UnityEngine.UI;
+using UnityEngine.EventSystems;
 
 namespace DialogueSystem
 {
@@ -125,6 +126,7 @@ namespace DialogueSystem
             yield return new WaitForEndOfFrame();
             continueButtonAnimator.SetBool("IsReady", true);
             continueButton.enabled = true;
+            EventSystem.current.SetSelectedGameObject(continueButton.gameObject);
         }
 
         bool CheckTextForKey(string text, string key)
