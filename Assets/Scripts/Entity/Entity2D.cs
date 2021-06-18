@@ -13,6 +13,8 @@ public class Entity2D : MonoBehaviour
     public EntityType entityType = EntityType.OBJECT;
     public float damageImmunityTime = 1.0f;
 
+    bool m_isDamageImmune;
+
     Timer damageImmunityTimer;
 
     Collider2D col;
@@ -21,6 +23,7 @@ public class Entity2D : MonoBehaviour
     {
         col = GetComponent<Collider2D>();
         damageImmunityTimer = new Timer(damageImmunityTime);
+        damageImmunityTimer.onTimerCompleted += EndDamageImmunity;
     }
 
     protected virtual void Update()
@@ -33,11 +36,17 @@ public class Entity2D : MonoBehaviour
 
     }
 
+    void EndDamageImmunity()
+    {
+        m_isDamageImmune = false;
+    }
+
     public virtual void OnDamage(Entity2D other)
     {
-        if (!damageImmunityTimer.IsDone())
+        if (m_isDamageImmune)
             return;
 
+        m_isDamageImmune = true;
         damageImmunityTimer.StartTimer();
         Debug.Log(gameObject.name + " Damaged by: " + other.name);
     }
