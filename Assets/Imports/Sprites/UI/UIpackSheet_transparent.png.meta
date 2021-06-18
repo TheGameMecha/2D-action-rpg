@@ -1546,7 +1546,7 @@ TextureImporter:
     second: UIpackSheet_transparent_513
   - first:
       213: -4044967327811282031
-    second: UIpackSheet_transparent_514
+    second: UI_Cursor_White
   - first:
       213: -9114643202674414002
     second: UIpackSheet_transparent_515
@@ -13980,7 +13980,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: UIpackSheet_transparent_514
+      name: UI_Cursor_White
       rect:
         serializedVersion: 2
         x: 486
