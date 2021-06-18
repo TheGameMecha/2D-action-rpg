@@ -13,7 +13,7 @@ public class Entity2D : MonoBehaviour
     public EntityType entityType = EntityType.OBJECT;
     public float damageImmunityTime = 1.0f;
 
-    bool m_isDamageImmune;
+    protected bool m_isDamageImmune;
 
     Timer damageImmunityTimer;
 
@@ -41,7 +41,7 @@ public class Entity2D : MonoBehaviour
         m_isDamageImmune = false;
     }
 
-    public virtual void OnDamage(Entity2D other)
+    public virtual void OnDamage(Entity2D other, int damage = 0)
     {
         if (m_isDamageImmune)
             return;
@@ -51,14 +51,9 @@ public class Entity2D : MonoBehaviour
         Debug.Log(gameObject.name + " Damaged by: " + other.name);
     }
 
-    public virtual void OnDamage(Entity2D other, int damage = 0)
+    public virtual void Teleport(Vector2 position)
     {
-        OnDamage(other);
-    }
-
-    public virtual void OnDamage(Entity2D other, float damage = 0.0f)
-    {
-        OnDamage(other);
+        transform.position = position;
     }
 }
 

@@ -1,16 +1,20 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(Animator))]
 public class SpriteCharacterController : Entity2D
 {
-    [Header("Character Properties")]
+    [Header("Controller Properties")]
     [SerializeField] float movementSpeed = 5f;
     [SerializeField] float attackCooldown = 0.1f;
     [SerializeField] [Tooltip("The layers that this character can attack")] LayerMask combatLayers;
     [SerializeField] float attackRange = 1.0f;
     [SerializeField] float interactRange = 1.0f;
+
+    [Header("Character Stats")]
+    [SerializeField] Character character;
 
     Rigidbody2D rb;
     BoxCollider2D hitBox;
@@ -39,6 +43,10 @@ public class SpriteCharacterController : Entity2D
 
         attackCdTimer.onTimerCompleted += AttackCDComplete;
         knockbackTimer.onTimerCompleted += KnockbackComplete;
+
+        character.onCharacterKilled += OnDeath;
+
+        character.Init();
     }
 
     #region Callback Functions
@@ -51,6 +59,11 @@ public class SpriteCharacterController : Entity2D
     void AttackCDComplete()
     {
         m_isAttacking = false;
+    }
+
+    void OnDeath()
+    {
+        Destroy(gameObject);
     }
     #endregion
 
@@ -114,7 +127,7 @@ public class SpriteCharacterController : Entity2D
 
             if (hitTargets[i].GetComponent<Entity2D>())
             {
-                hitTargets[i].GetComponent<Entity2D>().OnDamage(this);
+                hitTargets[i].GetComponent<Entity2D>().OnDamage(this, 1);
             }
         }
     }
@@ -197,7 +210,7 @@ public class SpriteCharacterController : Entity2D
 
         if (m_isAttacking)
             HandleAttackDetection();
-        
+
     }
 
     void FixedUpdate()
@@ -262,10 +275,14 @@ public class SpriteCharacterController : Entity2D
         }
     }
 
-    public override void OnDamage(Entity2D other)
+    public override void OnDamage(Entity2D other, int damage = 0)
     {
+        if (m_isDamageImmune)
+            return;
+
         base.OnDamage(other);
         PerformKnockback(other.GetComponent<SpriteCharacterController>().m_facingVector, 2.0f);
+        character.DamageHealth(damage);
     }
 
     private bool ScanWorldForCollision(float xPos, float yPos, LayerMask mask)
@@ -273,6 +290,38 @@ public class SpriteCharacterController : Entity2D
         Vector2 position = new Vector2(xPos + hitBox.offset.x, yPos + hitBox.offset.y);
         Collider2D[] collider2d = Physics2D.OverlapBoxAll(position, hitBox.size, 0, mask);
         return collider2d.Length > 0;
+    }
+}
+
+[System.Serializable]
+public class Character
+{
+    public int maximumHealth;
+    int currentHealth;
+
+    public void Init()
+    {
+        currentHealth = maximumHealth;
+    }
+
+    public void DamageHealth(int value)
+    {
+        currentHealth -= value;
+        if (currentHealth <= 0)
+        {
+            currentHealth = 0;
+            CharacterKilled();
+        }
+    }
+
+    public event Action onCharacterKilled;
+
+    public void CharacterKilled()
+    {
+        if (onCharacterKilled != null)
+        {
+            onCharacterKilled();
+        }
     }
 }
 

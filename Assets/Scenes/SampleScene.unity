@@ -1110,6 +1110,8 @@ MonoBehaviour:
     m_Bits: 256
   attackRange: 0.5
   interactRange: 1
+  character:
+    maximumHealth: 10
 --- !u!4 &1257509715
 Transform:
   m_ObjectHideFlags: 0
@@ -4226,6 +4228,8 @@ MonoBehaviour:
     m_Bits: 1024
   attackRange: 1
   interactRange: 1
+  character:
+    maximumHealth: 5
 --- !u!95 &1517403082
 Animator:
   serializedVersion: 3
