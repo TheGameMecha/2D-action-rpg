@@ -757,7 +757,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Supported: 0
   m_Shader: {fileID: 4800000, guid: 0559c0fb68f3e01499d22766859d8316, type: 3}
-  Distortion: 0.1
+  Distortion: 0.01
   InputGamma: 2.4
   OutputGamma: 1.25
   TextureSize: 1024
