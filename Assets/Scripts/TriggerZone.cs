@@ -5,7 +5,7 @@ using UnityEngine;
 [RequireComponent(typeof(Collider2D))]
 public class TriggerZone : MonoBehaviour
 {
-    [SerializeField] [EnumFlags] private EntityType allowedAvatarType;
+    [SerializeField] private EntityType allowedAvatarType;
     [SerializeField] bool triggerOnlyOnce = false;
 
     Collider2D col;

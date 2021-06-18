@@ -63,7 +63,8 @@ public class MenuItemAdditions : Editor
         GameObject go = new GameObject();
         go.name = "New Sprite Character Controller";
         go.AddComponent<BoxCollider2D>();
-        go.AddComponent<Rigidbody2D>();
+        go.AddComponent<Rigidbody2D>().gravityScale = 0;
+        go.GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.FreezeRotation;
         go.AddComponent<SpriteCharacterController>();
         Selection.activeGameObject = go;
     }

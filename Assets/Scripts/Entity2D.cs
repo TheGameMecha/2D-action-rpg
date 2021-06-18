@@ -11,11 +11,45 @@ using UnityEngine;
 public class Entity2D : MonoBehaviour
 {
     public EntityType entityType = EntityType.OBJECT;
+    public float damageImmunityTime = 1.0f;
+
+    Timer damageImmunityTimer;
+
     Collider2D col;
 
     protected virtual void Awake()
     {
         col = GetComponent<Collider2D>();
+        damageImmunityTimer = new Timer(damageImmunityTime);
+    }
+
+    protected virtual void Update()
+    {
+        damageImmunityTimer.Tick(Time.deltaTime);
+    }
+
+    protected virtual void OnCollisionEnter2D(Collision2D collision)
+    {
+
+    }
+
+    public virtual void OnDamage(Entity2D other)
+    {
+        if (!damageImmunityTimer.IsDone())
+            return;
+
+        damageImmunityTimer.StartTimer();
+        Debug.Log(gameObject.name + " Damaged by: " + other.name);
+    }
+
+    public virtual void OnDamage(Entity2D other, int damage = 0)
+    {
+        OnDamage(other);
+    }
+
+    public virtual void OnDamage(Entity2D other, float damage = 0.0f)
+    {
+        OnDamage(other);
     }
 }
 

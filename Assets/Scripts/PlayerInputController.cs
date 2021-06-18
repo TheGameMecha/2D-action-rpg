@@ -15,7 +15,6 @@ public class PlayerInputController : MonoBehaviour
     // Input Bools
     bool attack;
     bool interact;
-    bool confirmUI;
 
     PlayerControlScheme controls;
 
@@ -30,9 +29,6 @@ public class PlayerInputController : MonoBehaviour
         controls.Player.Fire.canceled += ctx => attack = false;
         controls.Player.Interact.performed += ctx => interact = true;
         controls.Player.Interact.canceled += ctx => interact = false;
-
-        controls.UI.Submit.performed += ctx => confirmUI = true;
-        controls.UI.Submit.canceled += ctx => confirmUI = false;
     }
 
     void Update()

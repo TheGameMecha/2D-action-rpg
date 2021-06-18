@@ -19,6 +19,7 @@ public class GameManager : MonoBehaviour
     #endregion
 
     public LayerMask interactableLayer;
+    public LayerMask WorldCollisionMask;
 
     public bool isUiActive = false;
 

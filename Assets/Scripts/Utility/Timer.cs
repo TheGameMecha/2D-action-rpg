@@ -1,7 +1,10 @@
-﻿
+﻿using UnityEngine;
+using System;
+
 /// <summary>
 /// A Timer object that tracks its own state
 /// </summary>
+[System.Serializable]
 public class Timer
 {
     public float duration = 1.0f;
@@ -39,6 +42,7 @@ public class Timer
 
         if (timer >= duration)
         {
+            TimerCompleted();
             isActive = false;
         }
     }
@@ -75,5 +79,15 @@ public class Timer
     public float GetCurrentTime()
     {
         return timer;
+    }
+
+    public event Action onTimerCompleted;
+
+    public void TimerCompleted()
+    {
+        if (onTimerCompleted != null)
+        {
+            onTimerCompleted();
+        }
     }
 }
