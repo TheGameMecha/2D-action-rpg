@@ -291,13 +291,23 @@ public class SpriteCharacterController : Entity2D
         Collider2D[] collider2d = Physics2D.OverlapBoxAll(position, hitBox.size, 0, mask);
         return collider2d.Length > 0;
     }
+
+    public int GetCharacterHealth()
+    {
+        return character.currentHealth;
+    }
+
+    public Character GetCharacter()
+    {
+        return character;
+    }
 }
 
 [System.Serializable]
 public class Character
 {
     public int maximumHealth;
-    int currentHealth;
+    public int currentHealth;
 
     public void Init()
     {

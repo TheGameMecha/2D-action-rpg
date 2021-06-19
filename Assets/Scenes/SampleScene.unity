@@ -1023,6 +1023,7 @@ GameObject:
   - component: {fileID: 1257509712}
   - component: {fileID: 1257509716}
   - component: {fileID: 1257509718}
+  - component: {fileID: 1257509719}
   m_Layer: 10
   m_Name: Player
   m_TagString: Untagged
@@ -1125,6 +1126,7 @@ MonoBehaviour:
   interactRange: 1
   character:
     maximumHealth: 10
+    currentHealth: 0
 --- !u!4 &1257509715
 Transform:
   m_ObjectHideFlags: 0
@@ -1196,6 +1198,19 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 0.64479804, y: 0.8839455}
   m_EdgeRadius: 0
+--- !u!114 &1257509719
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1257509711}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 89f1c504de1179c41a5464cd984263c9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  healthBar: {fileID: 1598193153}
 --- !u!1 &1359843709
 GameObject:
   m_ObjectHideFlags: 0
@@ -4243,6 +4258,7 @@ MonoBehaviour:
   interactRange: 1
   character:
     maximumHealth: 5
+    currentHealth: 0
 --- !u!95 &1517403082
 Animator:
   serializedVersion: 3
