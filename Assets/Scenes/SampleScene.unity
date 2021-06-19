@@ -1125,7 +1125,7 @@ MonoBehaviour:
   attackRange: 0.5
   interactRange: 1
   character:
-    maximumHealth: 10
+    maximumHealth: 100
     currentHealth: 0
 --- !u!4 &1257509715
 Transform:
@@ -1210,6 +1210,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 89f1c504de1179c41a5464cd984263c9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  healthBacker: {fileID: 1954262522}
   healthBar: {fileID: 1598193153}
 --- !u!1 &1359843709
 GameObject:
@@ -6152,7 +6153,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 100, y: 10}
+  m_SizeDelta: {x: 100, y: 5}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &1598193153
 MonoBehaviour:
@@ -6535,7 +6536,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 100, y: 10}
+  m_SizeDelta: {x: 100, y: 5}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &1954262522
 MonoBehaviour:
@@ -6557,7 +6558,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   m_Sprite: {fileID: 21300000, guid: 822139496cb2de048b9dca6d0d3d8520, type: 3}
-  m_Type: 3
+  m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 0

@@ -232,12 +232,30 @@ public class SpriteCharacterController : Entity2D
                 }
                 final_hor_vel = 0;
             }
+
+            if (ScanWorldForCollision(currentPosition.x + m_movement.x * Time.fixedDeltaTime, currentPosition.y, GameManager.instance.interactableLayer))
+            {
+                while (!ScanWorldForCollision(currentPosition.x + ((final_hor_vel * Time.fixedDeltaTime) / 8), currentPosition.y, GameManager.instance.interactableLayer))
+                {
+                    currentPosition.x += ((final_hor_vel * Time.fixedDeltaTime) / 8);
+                }
+                final_hor_vel = 0;
+            }
             currentPosition.x += final_hor_vel * Time.fixedDeltaTime;
 
             //vertical check
             if (ScanWorldForCollision(currentPosition.x, currentPosition.y + final_ver_vel * Time.fixedDeltaTime, GameManager.instance.WorldCollisionMask))
             {
                 while (!ScanWorldForCollision(currentPosition.x, currentPosition.y + ((final_ver_vel * Time.fixedDeltaTime) / 8), GameManager.instance.WorldCollisionMask))
+                {
+                    currentPosition.y += ((final_ver_vel * Time.fixedDeltaTime) / 8);
+                }
+                final_ver_vel = 0;
+            }
+
+            if (ScanWorldForCollision(currentPosition.x, currentPosition.y + final_ver_vel * Time.fixedDeltaTime, GameManager.instance.interactableLayer))
+            {
+                while (!ScanWorldForCollision(currentPosition.x, currentPosition.y + ((final_ver_vel * Time.fixedDeltaTime) / 8), GameManager.instance.interactableLayer))
                 {
                     currentPosition.y += ((final_ver_vel * Time.fixedDeltaTime) / 8);
                 }
