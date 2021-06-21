@@ -41,7 +41,7 @@ public class Entity2D : MonoBehaviour
         m_isDamageImmune = false;
     }
 
-    public virtual void OnDamage(Entity2D other, int damage = 0)
+    public virtual void OnDamage(Entity2D other, int damage = 0, bool knockback = false)
     {
         if (m_isDamageImmune)
             return;

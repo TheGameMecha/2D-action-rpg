@@ -63,7 +63,12 @@ public class SpriteCharacterController : Entity2D
 
     void OnDeath()
     {
-        Destroy(gameObject);
+        if (entityType != EntityType.PLAYER)
+            Destroy(gameObject);
+        else
+        {
+            // Tell the GameManager we died
+        }
     }
     #endregion
 
@@ -127,7 +132,7 @@ public class SpriteCharacterController : Entity2D
 
             if (hitTargets[i].GetComponent<Entity2D>())
             {
-                hitTargets[i].GetComponent<Entity2D>().OnDamage(this, 1);
+                hitTargets[i].GetComponent<Entity2D>().OnDamage(this, 1, true);
             }
         }
     }
@@ -215,7 +220,7 @@ public class SpriteCharacterController : Entity2D
 
     void FixedUpdate()
     {
-        if (!m_isAttacking)
+        if (!m_isAttacking && m_movement.sqrMagnitude > 0)
         {
             Vector2 currentPosition = rb.position;
 
@@ -224,44 +229,26 @@ public class SpriteCharacterController : Entity2D
             float final_ver_vel = deltaPosition.y;
 
             //horizontal check
-            if (ScanWorldForCollision(currentPosition.x + m_movement.x * Time.fixedDeltaTime, currentPosition.y, GameManager.instance.WorldCollisionMask))
+            if (ScanWorldForCollision(currentPosition.x + m_movement.x * Time.deltaTime, currentPosition.y, GameManager.instance.WorldCollisionMask))
             {
-                while (!ScanWorldForCollision(currentPosition.x + ((final_hor_vel * Time.fixedDeltaTime) / 8), currentPosition.y, GameManager.instance.WorldCollisionMask))
-                {
-                    currentPosition.x += ((final_hor_vel * Time.fixedDeltaTime) / 8);
-                }
                 final_hor_vel = 0;
             }
-
-            if (ScanWorldForCollision(currentPosition.x + m_movement.x * Time.fixedDeltaTime, currentPosition.y, GameManager.instance.interactableLayer))
+            else if (ScanWorldForCollision(currentPosition.x + m_movement.x * Time.deltaTime, currentPosition.y, GameManager.instance.interactableLayer))
             {
-                while (!ScanWorldForCollision(currentPosition.x + ((final_hor_vel * Time.fixedDeltaTime) / 8), currentPosition.y, GameManager.instance.interactableLayer))
-                {
-                    currentPosition.x += ((final_hor_vel * Time.fixedDeltaTime) / 8);
-                }
                 final_hor_vel = 0;
             }
-            currentPosition.x += final_hor_vel * Time.fixedDeltaTime;
+            currentPosition.x += final_hor_vel * Time.deltaTime;
 
             //vertical check
-            if (ScanWorldForCollision(currentPosition.x, currentPosition.y + final_ver_vel * Time.fixedDeltaTime, GameManager.instance.WorldCollisionMask))
+            if (ScanWorldForCollision(currentPosition.x, currentPosition.y + final_ver_vel * Time.deltaTime, GameManager.instance.WorldCollisionMask))
             {
-                while (!ScanWorldForCollision(currentPosition.x, currentPosition.y + ((final_ver_vel * Time.fixedDeltaTime) / 8), GameManager.instance.WorldCollisionMask))
-                {
-                    currentPosition.y += ((final_ver_vel * Time.fixedDeltaTime) / 8);
-                }
                 final_ver_vel = 0;
             }
-
-            if (ScanWorldForCollision(currentPosition.x, currentPosition.y + final_ver_vel * Time.fixedDeltaTime, GameManager.instance.interactableLayer))
+            else if (ScanWorldForCollision(currentPosition.x, currentPosition.y + final_ver_vel * Time.deltaTime, GameManager.instance.interactableLayer))
             {
-                while (!ScanWorldForCollision(currentPosition.x, currentPosition.y + ((final_ver_vel * Time.fixedDeltaTime) / 8), GameManager.instance.interactableLayer))
-                {
-                    currentPosition.y += ((final_ver_vel * Time.fixedDeltaTime) / 8);
-                }
                 final_ver_vel = 0;
             }
-            currentPosition.y += final_ver_vel * Time.fixedDeltaTime;
+            currentPosition.y += final_ver_vel * Time.deltaTime;
 
             rb.MovePosition(currentPosition);
         }
@@ -282,6 +269,11 @@ public class SpriteCharacterController : Entity2D
     {
         base.OnCollisionEnter2D(collision);
 
+        foreach (var item in collision.contacts)
+        {
+            Debug.DrawRay(item.point, item.normal * 100, UnityEngine.Random.ColorHSV(0f, 1f, 1f, 1f, 0.5f, 1f), 10f);
+        }
+
         if (ScanWorldForCollision(collision.transform.position.x, collision.transform.position.y, combatLayers))
         {
             Debug.Log("Collision With Enemy!");
@@ -289,24 +281,34 @@ public class SpriteCharacterController : Entity2D
             {
                 Debug.Log("Player Was Hit");
                 PerformKnockback(collision.GetContact(0).normal, 2.0f);
+                OnDamage(collision.gameObject.GetComponent<Entity2D>(), 1);
             }
         }
     }
 
-    public override void OnDamage(Entity2D other, int damage = 0)
+    private void OnCollisionStay2D(Collision2D collision)
+    {
+        // Hack to prevent player from getting stuck in a wall lol
+        rb.position = rb.position + collision.GetContact(0).normal * 0.1f;
+    }
+
+    public override void OnDamage(Entity2D other, int damage = 0, bool knockback = false)
     {
         if (m_isDamageImmune)
             return;
 
         base.OnDamage(other);
-        PerformKnockback(other.GetComponent<SpriteCharacterController>().m_facingVector, 2.0f);
+
+        if (knockback)
+            PerformKnockback(other.GetComponent<SpriteCharacterController>().m_facingVector, 2.0f);
         character.DamageHealth(damage);
     }
 
     private bool ScanWorldForCollision(float xPos, float yPos, LayerMask mask)
     {
         Vector2 position = new Vector2(xPos + hitBox.offset.x, yPos + hitBox.offset.y);
-        Collider2D[] collider2d = Physics2D.OverlapBoxAll(position, hitBox.size, 0, mask);
+        Collider2D[] collider2d = Physics2D.OverlapBoxAll(position, hitBox.size * 0.9f, 0, mask);
+        Debug.Log(collider2d.Length > 0);
         return collider2d.Length > 0;
     }
 
