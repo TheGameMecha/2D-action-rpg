@@ -44,7 +44,7 @@ public class SpriteCharacterController : Entity2D
         hitBox = GetComponent<BoxCollider2D>();
 
         attackCdTimer = new Timer(attackCooldown);
-        knockbackTimer = new Timer(1f);
+        knockbackTimer = new Timer(0.2f);
 
         attackCdTimer.onTimerCompleted += AttackCDComplete;
         knockbackTimer.onTimerCompleted += KnockbackComplete;

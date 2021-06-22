@@ -20,7 +20,6 @@ public class Pathfinding2D : MonoBehaviour
         //calculates path for pathfinding
         while (openSet.Count > 0)
         {
-
             //iterates through openSet and finds lowest FCost
             Node2D node = openSet[0];
             for (int i = 1; i < openSet.Count; i++)
