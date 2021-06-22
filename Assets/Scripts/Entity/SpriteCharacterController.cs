@@ -326,7 +326,6 @@ public class SpriteCharacterController : Entity2D
     {
         Vector2 position = new Vector2(xPos + hitBox.offset.x, yPos + hitBox.offset.y);
         Collider2D[] collider2d = Physics2D.OverlapBoxAll(position, hitBox.size * 0.9f, 0, mask);
-        Debug.Log(collider2d.Length > 0);
         return collider2d.Length > 0;
     }
 
