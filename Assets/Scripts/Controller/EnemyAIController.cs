@@ -25,6 +25,12 @@ public class EnemyAIController : MonoBehaviour
 
     private void FixedUpdate()
     {
+        if (GameManager.instance.isUiActive)
+        {
+            controller.StopAllMovement();
+            return;
+        }
+
         if (controller.GetIsStunned() == false && !GameManager.instance.isUiActive)
         {
             FindPathToPlayer();
