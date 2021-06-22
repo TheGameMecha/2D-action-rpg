@@ -34,12 +34,13 @@ public class EnemyAIController : MonoBehaviour
                 {
                     currentPathNode = 0;
                     pathfinder.path = null;
-                    //controller.StopAllMovement();
                 }
                 else if (Vector2.Distance(transform.position, pathfinder.path[currentPathNode].worldPosition) > 0.1f)
                 {
-                    Vector2 dir = pathfinder.path[currentPathNode].worldPosition - transform.position;
-                    controller.SetMovement(dir.normalized);
+                    Vector2 dir = GameManager.instance.player.transform.position - transform.position;
+
+                    if (dir.magnitude > 0.1f)
+                        controller.SetMovement(dir.normalized);
                 }
                 else if (Vector2.Distance(transform.position, pathfinder.path[currentPathNode].worldPosition) < 0.1f)
                 {

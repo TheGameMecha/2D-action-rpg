@@ -44,7 +44,7 @@ public class SpriteCharacterController : Entity2D
         hitBox = GetComponent<BoxCollider2D>();
 
         attackCdTimer = new Timer(attackCooldown);
-        knockbackTimer = new Timer(0.2f);
+        knockbackTimer = new Timer(1f);
 
         attackCdTimer.onTimerCompleted += AttackCDComplete;
         knockbackTimer.onTimerCompleted += KnockbackComplete;
@@ -79,7 +79,7 @@ public class SpriteCharacterController : Entity2D
                 Debug.LogWarning(gameObject.name + " does not have a Death Effect prefab!");
             }
             Destroy(gameObject);
-        }   
+        }
         else
         {
             // Tell the GameManager we died
@@ -102,6 +102,7 @@ public class SpriteCharacterController : Entity2D
         m_movement = direction * force;
 
         knockbackTimer.StartTimer();
+
     }
 
     public void PerformAttack()
@@ -222,7 +223,7 @@ public class SpriteCharacterController : Entity2D
         // Update Animations
         animator.SetFloat("Horizontal", m_lastMovement.x); // Use lastMovement so we can keep the idle animations facing the correct direction
         animator.SetFloat("Vertical", m_lastMovement.y);
-        animator.SetFloat("Speed", m_lastMovement.sqrMagnitude);
+        animator.SetFloat("Speed", m_movement.sqrMagnitude);
 
         UpdateFacingDirection();
         CheckForInteract();

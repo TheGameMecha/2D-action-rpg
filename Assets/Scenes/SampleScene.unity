@@ -420,7 +420,7 @@ GameObject:
   m_IsActive: 1
 --- !u!114 &140843808
 MonoBehaviour:
-  m_ObjectHideFlags: 2
+  m_ObjectHideFlags: 10
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
@@ -1337,7 +1337,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   entityType: 0
   damageImmunityTime: 1
-  movementSpeed: 3
+  movementSpeed: 5
   attackCooldown: 0.5
   combatLayers:
     serializedVersion: 2

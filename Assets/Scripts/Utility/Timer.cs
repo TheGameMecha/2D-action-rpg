@@ -42,6 +42,7 @@ public class Timer
 
         if (timer >= duration)
         {
+            timer = 0f;
             TimerCompleted();
             isActive = false;
         }
