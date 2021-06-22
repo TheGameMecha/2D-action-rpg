@@ -21,6 +21,10 @@ public class GameManager : MonoBehaviour
     public LayerMask interactableLayer;
     public LayerMask WorldCollisionMask;
 
+    public SpriteCharacterController player;
+
+    public Grid2D levelGrid;
+
     public bool isUiActive = false;
 
     private void Update()

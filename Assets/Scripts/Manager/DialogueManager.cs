@@ -31,6 +31,7 @@ namespace DialogueSystem
         private Queue<string> sentences;
 
         public bool dialogueIsActive = false;
+        public AudioSource audioSource;
 
         Animator continueButtonAnimator;
 
@@ -39,6 +40,8 @@ namespace DialogueSystem
 
         bool clearNextLine = false;
         float typeSpeedDelay = 1f;
+
+        Dialogue activeDialogue;
 
         void Start()
         {
@@ -59,6 +62,7 @@ namespace DialogueSystem
             dialogueIsActive = true;
             continueButtonAnimator.SetBool("IsReady", false);
             continueButton.enabled = false;
+            activeDialogue = dialogue;
 
             sentences.Clear();
             foreach (string sentence in dialogue.sentences)
@@ -119,6 +123,8 @@ namespace DialogueSystem
             foreach (char letter in sentence.ToCharArray())
             {
                 dialogueText.text += letter;
+                if (activeDialogue.typeSound != null)
+                    audioSource.PlayOneShot(activeDialogue.typeSound);
                 yield return new WaitForSeconds(Mathf.Pow(typeSpeedDelay, -1));
 
             }
@@ -168,6 +174,7 @@ namespace DialogueSystem
     {
         public string speakerName;
         [TextArea] public List<string> sentences;
+        public AudioClip typeSound;
     }
 
     /// <summary>

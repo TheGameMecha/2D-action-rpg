@@ -16,3 +16,4 @@ MonoBehaviour:
     speakerName: 
     sentences:
     - Hello
+    typeSound: {fileID: 8300000, guid: eff75eb6217c93440837636807ab2538, type: 3}

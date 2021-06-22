@@ -12,9 +12,14 @@ public class SpriteCharacterController : Entity2D
     [SerializeField] [Tooltip("The layers that this character can attack")] LayerMask combatLayers;
     [SerializeField] float attackRange = 1.0f;
     [SerializeField] float interactRange = 1.0f;
+    [SerializeField] AudioSource audioSource;
 
     [Header("Character Stats")]
     [SerializeField] Character character;
+
+    [Header("Effects")]
+    public SpriteEffect deathEffect;
+    public AudioClip swordSwingSFX;
 
     Rigidbody2D rb;
     BoxCollider2D hitBox;
@@ -64,7 +69,17 @@ public class SpriteCharacterController : Entity2D
     void OnDeath()
     {
         if (entityType != EntityType.PLAYER)
+        {
+            if (deathEffect != null)
+            {
+                Instantiate(deathEffect, rb.position, Quaternion.identity);
+            }
+            else
+            {
+                Debug.LogWarning(gameObject.name + " does not have a Death Effect prefab!");
+            }
             Destroy(gameObject);
+        }   
         else
         {
             // Tell the GameManager we died
@@ -96,6 +111,8 @@ public class SpriteCharacterController : Entity2D
             m_isAttacking = true;
             attackCdTimer.StartTimer();
             animator.SetTrigger("Attack");
+            if (swordSwingSFX != null)
+                audioSource.PlayOneShot(swordSwingSFX);
         }
     }
 
@@ -205,7 +222,7 @@ public class SpriteCharacterController : Entity2D
         // Update Animations
         animator.SetFloat("Horizontal", m_lastMovement.x); // Use lastMovement so we can keep the idle animations facing the correct direction
         animator.SetFloat("Vertical", m_lastMovement.y);
-        animator.SetFloat("Speed", m_movement.sqrMagnitude);
+        animator.SetFloat("Speed", m_lastMovement.sqrMagnitude);
 
         UpdateFacingDirection();
         CheckForInteract();
@@ -320,6 +337,16 @@ public class SpriteCharacterController : Entity2D
     public Character GetCharacter()
     {
         return character;
+    }
+
+    public bool GetIsStunned()
+    {
+        return m_isStunned;
+    }
+
+    public bool GetCanMove()
+    {
+        return !m_isAttacking && !m_isStunned;
     }
 }
 
